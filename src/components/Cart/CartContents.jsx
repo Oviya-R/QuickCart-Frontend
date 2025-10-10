@@ -46,7 +46,7 @@ const CartContents = ({ cart, userId, guestId }) => {
             <div>
               <h3>{product.name}</h3>
               <p className="text-sm text-gray-500 ">
-                size: {product.size}| color:{product.color}
+                size: {product.size} | color: {product.color}
               </p>
               <div className="flex items-centermt-2 ">
                 <button

@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// ✅ Load environment variables (VITE_BACKEND_URL)
+//  Load environment variables (VITE_BACKEND_URL)
 export default defineConfig({
   plugins: [react()],
   server: {

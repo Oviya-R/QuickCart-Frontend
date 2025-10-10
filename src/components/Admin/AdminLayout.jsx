@@ -20,7 +20,7 @@ const AdminLayout = () => {
         <h1 className="ml-4 text-xl font-medium">Admin Dashboard</h1>
       </div>
 
-      {/* Overlay for Mobile sideBar */}
+      {/* Mobile sideBar */}
       {isSideBarOpen && (
         <div
           className="fixed inset-0 z-10 bg-black bg-opacity-50 md:hidded"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { TbBrandMeta } from "react-icons/tb";
 import { IoLogoInstagram } from "react-icons/io";
@@ -6,6 +6,38 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { FiPhoneCall } from "react-icons/fi";
 
 const Footer = () => {
+  const [email, setEmail] = useState(""); 
+  const [message, setMessage] = useState(""); 
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      setMessage("Please enter an email");
+      return;
+    }
+    try {
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(data.message || "Something went wrong");
+      } else {
+        setMessage(data.message); // success message
+        setEmail(""); // clear input
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Server error");
+    }
+  };
+
   return (
     <footer className="bg-black text-gray-300 border-t border-gray-800">
       {/* Top Section */}
@@ -18,10 +50,12 @@ const Footer = () => {
           <p className="text-gray-400 mb-4 text-sm leading-relaxed">
             Stay updated on new arrivals, exclusive events, and special offers.
           </p>
-          <form className="flex mt-4">
+          <form onSubmit={handleSubscribe} className="flex mt-4">
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="p-3 w-full text-sm bg-transparent border border-gray-700 rounded-l-md text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             <button
@@ -31,6 +65,7 @@ const Footer = () => {
               Subscribe
             </button>
           </form>
+          {message && <p className="text-xs text-gray-500 mt-2">{message}</p>}
           <p className="text-xs text-gray-500 mt-3">
             Get 10% off on your first order
           </p>
@@ -41,22 +76,34 @@ const Footer = () => {
           <h3 className="text-lg font-semibold text-white mb-4">Shop</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link to="collection/all?gender=Men" className="hover:text-white transition-colors">
+              <Link
+                to="collection/all?gender=Men"
+                className="hover:text-white transition-colors"
+              >
                 Men’s Top Wear
               </Link>
             </li>
             <li>
-              <Link to="collection/all?gender=Women" className="hover:text-white transition-colors">
+              <Link
+                to="collection/all?gender=Women"
+                className="hover:text-white transition-colors"
+              >
                 Women’s Top Wear
               </Link>
             </li>
             <li>
-              <Link to="collection/all?gender=Men" className="hover:text-white transition-colors">
+              <Link
+                to="collection/all?gender=Men"
+                className="hover:text-white transition-colors"
+              >
                 Men’s Bottom Wear
               </Link>
             </li>
             <li>
-              <Link to="collection/all?gender=Women" className="hover:text-white transition-colors">
+              <Link
+                to="collection/all?gender=Women"
+                className="hover:text-white transition-colors"
+              >
                 Women’s Bottom Wear
               </Link>
             </li>
@@ -130,8 +177,11 @@ const Footer = () => {
 
       {/* Bottom Section */}
       <div className="border-t border-gray-800 py-6 text-center text-sm text-gray-500">
-        © 2025 <span className="font-semibold text-white">QuickCart | Your Style, Our Passion</span>. All
-        rights reserved.
+        © 2025{" "}
+        <span className="font-semibold text-white">
+          QuickCart | Your Style, Our Passion
+        </span>
+        . All rights reserved.
       </div>
     </footer>
   );
